@@ -1,0 +1,30 @@
+{
+  "name": "vocabnest",
+  "private": true,
+  "version": "0.1.0",
+  "description": "VocabNest monorepo with Express API, shared contracts, and Next.js frontend shell.",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "pnpm --filter @vocabnest/contracts build && pnpm --parallel --filter @vocabnest/api --filter @vocabnest/web dev",
+    "generate:api": "pnpm --filter @vocabnest/api generate:openapi && pnpm --filter @vocabnest/web generate:api",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm --filter @vocabnest/contracts typecheck && pnpm --filter @vocabnest/api typecheck && pnpm --filter @vocabnest/web typecheck",
+    "test": "pnpm --filter @vocabnest/api test"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "eslint": "latest",
+    "prettier": "latest",
+    "typescript": "^5",
+    "typescript-eslint": "latest"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "bcrypt",
+      "esbuild",
+      "prisma",
+      "sharp"
+    ]
+  }
+}

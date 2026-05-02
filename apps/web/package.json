@@ -1,0 +1,26 @@
+{
+  "name": "@vocabnest/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @vocabnest/contracts build && next dev",
+    "build": "pnpm --filter @vocabnest/contracts build && next build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "generate:api": "openapi-typescript ../api/openapi.json -o src/generated/api-types.ts"
+  },
+  "dependencies": {
+    "@vocabnest/contracts": "workspace:*",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "openapi-typescript": "latest",
+    "typescript": "^5"
+  }
+}

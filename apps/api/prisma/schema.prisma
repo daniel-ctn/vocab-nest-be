@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Difficulty {
+  easy
+  medium
+  hard
+}
+
+enum ReviewRating {
+  again
+  hard
+  good
+  easy
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String
+  passwordHash   String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  vocabulary     Vocabulary[]
+  groups         VocabularyGroup[]
+  dailyPractices DailyPractice[]
+  searchHistory  SearchHistory[]
+}
+
+model Vocabulary {
+  id                 String                      @id @default(cuid())
+  userId             String
+  user               User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word               String
+  normalizedWord     String
+  isPhrase           Boolean                     @default(false)
+  partOfSpeech       String
+  cefrLevel          String
+  englishDefinition  String
+  vietnameseMeaning  String
+  simpleExplanation  String
+  pronunciation      String
+  ipa                String
+  synonyms           Json                        @default("[]")
+  antonyms           Json                        @default("[]")
+  examples           Json                        @default("[]")
+  collocations       Json                        @default("[]")
+  usageNotes         String                      @default("")
+  commonMistakes     Json                        @default("[]")
+  wordFamily         Json                        @default("[]")
+  tags               Json                        @default("[]")
+  personalNote       String?
+  difficulty         Difficulty                  @default(medium)
+  favorite           Boolean                     @default(false)
+  reviewCount        Int                         @default(0)
+  lastReviewedAt     DateTime?
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+  groupRelations     VocabularyGroupRelation[]
+  practiceItems      DailyPracticeItem[]
+  savedSearchHistory SearchHistory[]
+
+  @@unique([userId, normalizedWord])
+  @@index([userId, createdAt])
+  @@index([userId, difficulty])
+  @@index([userId, favorite])
+  @@index([userId, lastReviewedAt])
+}
+
+model VocabularyGroup {
+  id          String                      @id @default(cuid())
+  userId      String
+  user        User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  color       String?
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @updatedAt
+  vocabulary  VocabularyGroupRelation[]
+
+  @@unique([userId, name])
+  @@index([userId, createdAt])
+}
+
+model VocabularyGroupRelation {
+  vocabularyId String
+  groupId      String
+  vocabulary   Vocabulary      @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  group        VocabularyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt    DateTime        @default(now())
+
+  @@id([vocabularyId, groupId])
+  @@index([groupId])
+}
+
+model DailyPractice {
+  id          String              @id @default(cuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime            @db.Date
+  completed   Boolean             @default(false)
+  completedAt DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  items       DailyPracticeItem[]
+
+  @@unique([userId, date])
+  @@index([userId, completed])
+}
+
+model DailyPracticeItem {
+  id              String        @id @default(cuid())
+  dailyPracticeId String
+  dailyPractice   DailyPractice @relation(fields: [dailyPracticeId], references: [id], onDelete: Cascade)
+  vocabularyId    String
+  vocabulary      Vocabulary    @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  position        Int
+  rating          ReviewRating?
+  reviewedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([dailyPracticeId, vocabularyId])
+  @@unique([dailyPracticeId, position])
+}
+
+model SearchHistory {
+  id                String      @id @default(cuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query             String
+  normalizedQuery   String
+  resultJson        Json
+  savedVocabularyId String?
+  savedVocabulary   Vocabulary? @relation(fields: [savedVocabularyId], references: [id], onDelete: SetNull)
+  demoMode          Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, normalizedQuery])
+}

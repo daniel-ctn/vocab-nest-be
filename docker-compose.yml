@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: vocabnest-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vocabnest
+    ports:
+      - "5432:5432"
+    volumes:
+      - vocabnest-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vocabnest"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  vocabnest-postgres-data:

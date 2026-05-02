@@ -1,0 +1,51 @@
+{
+  "name": "@vocabnest/api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "pnpm --filter @vocabnest/contracts build && tsx watch src/server.ts",
+    "build": "pnpm --filter @vocabnest/contracts build && pnpm prisma:generate && tsc",
+    "start": "node dist/server.js",
+    "lint": "eslint .",
+    "typecheck": "pnpm prisma:generate && tsc --noEmit",
+    "test": "vitest run",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:seed": "prisma db seed",
+    "generate:openapi": "pnpm --filter @vocabnest/contracts build && tsx src/openapi/write-openapi.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "latest",
+    "@prisma/client": "latest",
+    "@vocabnest/contracts": "workspace:*",
+    "bcrypt": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "jsonwebtoken": "latest",
+    "morgan": "latest",
+    "openai": "latest",
+    "pg": "latest",
+    "swagger-ui-express": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "latest",
+    "@types/cors": "latest",
+    "@types/express": "latest",
+    "@types/jsonwebtoken": "latest",
+    "@types/morgan": "latest",
+    "@types/node": "latest",
+    "@types/pg": "latest",
+    "@types/supertest": "latest",
+    "@types/swagger-ui-express": "latest",
+    "prisma": "latest",
+    "supertest": "latest",
+    "tsx": "latest",
+    "typescript": "^5",
+    "vitest": "latest"
+  }
+}
