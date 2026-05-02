@@ -1,9 +1,10 @@
 # VocabNest
 
-VocabNest is a pnpm monorepo for the backend of a personal English vocabulary learning app.
+VocabNest is the Express backend for a personal English vocabulary learning app.
 
-- `apps/api`: Express 5 + TypeScript API
-- `packages/contracts`: shared Zod schemas, TypeScript types, and OpenAPI document builder
+- `src`: Express 5 + TypeScript API
+- `src/contracts`: shared Zod schemas, TypeScript types, and OpenAPI document builder
+- `prisma`: Prisma schema and seed script
 
 ## Requirements
 
@@ -15,10 +16,10 @@ VocabNest is a pnpm monorepo for the backend of a personal English vocabulary le
 
 ```bash
 pnpm install
-cp .env.example apps/api/.env
+cp .env.example .env
 ```
 
-Update `apps/api/.env` with your local `DATABASE_URL` and a long `JWT_SECRET`.
+Update `.env` with your local `DATABASE_URL` and a long `JWT_SECRET`.
 `OPENAI_API_KEY` is optional. If it is missing, `/vocabulary/search` returns deterministic mock data with `demoMode: true`.
 
 For local PostgreSQL with Docker:
@@ -30,8 +31,8 @@ docker compose up -d postgres
 ## Development
 
 ```bash
-pnpm --filter @vocabnest/api prisma:migrate
-pnpm --filter @vocabnest/api prisma:seed
+pnpm prisma:migrate
+pnpm prisma:seed
 pnpm generate:api
 pnpm dev
 ```
@@ -54,23 +55,23 @@ pnpm test
 API integration tests are opt-in because they need PostgreSQL:
 
 ```bash
-RUN_API_TESTS=true pnpm --filter @vocabnest/api test
+RUN_API_TESTS=true pnpm test
 ```
 
 On Windows `cmd.exe`:
 
 ```cmd
-set RUN_API_TESTS=true && pnpm --filter @vocabnest/api test
+set RUN_API_TESTS=true && pnpm test
 ```
 
 ## Contract Workflow
 
-1. Update schemas in `packages/contracts`.
-2. Update backend route implementation in `apps/api`.
+1. Update schemas in `src/contracts`.
+2. Update backend route implementation in `src`.
 3. Regenerate the OpenAPI document with `pnpm generate:api`.
 4. Run `pnpm typecheck` and `pnpm test`.
 
-The backend imports request and response schemas from `@vocabnest/contracts`, validates requests with Zod, and exposes OpenAPI at `/openapi.json`.
+The backend imports request and response schemas from `src/contracts`, validates requests with Zod, and exposes OpenAPI at `/openapi.json`.
 
 ## Demo User
 

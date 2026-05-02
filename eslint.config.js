@@ -1,16 +1,17 @@
-const js = require("@eslint/js");
-const tseslint = require("typescript-eslint");
+const js = require('@eslint/js')
+const tseslint = require('typescript-eslint')
 
 module.exports = tseslint.config(
   {
     ignores: [
-      "node_modules",
-      "dist",
-      "**/dist/**",
-      ".next",
-      "coverage",
-      "apps/api/src/generated",
-      "apps/api/openapi.json",
+      'node_modules',
+      'dist',
+      '**/dist/**',
+      '.next',
+      'coverage',
+      'src/generated',
+      'openapi.json',
+      'eslint.config.js',
     ],
   },
   js.configs.recommended,
@@ -23,8 +24,8 @@ module.exports = tseslint.config(
       },
     },
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-misused-promises": "off"
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
     },
   },
-);
+)
