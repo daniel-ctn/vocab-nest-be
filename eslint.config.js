@@ -10,7 +10,6 @@ module.exports = tseslint.config(
       ".next",
       "coverage",
       "apps/api/src/generated",
-      "apps/web/src/generated",
       "apps/api/openapi.json",
     ],
   },

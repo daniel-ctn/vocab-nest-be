@@ -9,4 +9,3 @@ coverage
 !*.env.example
 apps/api/src/generated
 apps/api/openapi.json
-apps/web/src/generated

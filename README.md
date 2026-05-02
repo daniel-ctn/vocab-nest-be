@@ -1,9 +1,8 @@
 # VocabNest
 
-VocabNest is a pnpm monorepo for a personal English vocabulary learning app.
+VocabNest is a pnpm monorepo for the backend of a personal English vocabulary learning app.
 
 - `apps/api`: Express 5 + TypeScript API
-- `apps/web`: Next.js frontend shell with a centralized API client
 - `packages/contracts`: shared Zod schemas, TypeScript types, and OpenAPI document builder
 
 ## Requirements
@@ -68,11 +67,10 @@ set RUN_API_TESTS=true && pnpm --filter @vocabnest/api test
 
 1. Update schemas in `packages/contracts`.
 2. Update backend route implementation in `apps/api`.
-3. Regenerate frontend API types with `pnpm generate:api`.
-4. Update frontend UI and client usage in `apps/web`.
-5. Run `pnpm typecheck` and `pnpm test`.
+3. Regenerate the OpenAPI document with `pnpm generate:api`.
+4. Run `pnpm typecheck` and `pnpm test`.
 
-The backend imports request and response schemas from `@vocabnest/contracts`, validates requests with Zod, and exposes OpenAPI at `/openapi.json`. The frontend imports safe public types from `@vocabnest/contracts` and can generate OpenAPI operation types into `apps/web/src/generated/api-types.ts`.
+The backend imports request and response schemas from `@vocabnest/contracts`, validates requests with Zod, and exposes OpenAPI at `/openapi.json`.
 
 ## Demo User
 
